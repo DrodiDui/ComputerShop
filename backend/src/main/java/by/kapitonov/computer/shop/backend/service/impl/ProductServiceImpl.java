@@ -50,6 +50,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Product getOneById(Long id) {
+        return productRepository.findById(id)
+                .orElseThrow(
+                        () -> new ProductNotFoundException("Product hasn't been found")
+                );
+    }
+
+    @Override
     public Product create(ProductDTO productDTO) {
         Product product = Product.builder()
                 .productName(productDTO.getProductName())

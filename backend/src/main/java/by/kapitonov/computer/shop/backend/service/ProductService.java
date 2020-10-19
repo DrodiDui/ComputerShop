@@ -10,6 +10,8 @@ public interface ProductService {
     Page<Product> getAllByCategory(String category, Pageable pageable);
 
     Product getOneByNameAndCategory(String category, String productName);
+    Product getOneById(Long id);
+
 
     Product create(ProductDTO productDTO);
 
