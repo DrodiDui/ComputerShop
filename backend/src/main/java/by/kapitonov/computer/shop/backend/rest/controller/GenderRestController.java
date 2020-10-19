@@ -1,7 +1,6 @@
 package by.kapitonov.computer.shop.backend.rest.controller;
 
 import by.kapitonov.computer.shop.backend.model.Gender;
-import by.kapitonov.computer.shop.backend.rest.mapper.GenderMapper;
 import by.kapitonov.computer.shop.backend.rest.vm.GenderVM;
 import by.kapitonov.computer.shop.backend.service.GenderService;
 import org.springframework.http.HttpStatus;
@@ -23,12 +22,10 @@ public class GenderRestController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<GenderVM>> getAllGenders() {
+    public ResponseEntity<List<Gender>> getAllGenders() {
 
         List<Gender> genders = genderService.getAll();
-        List<GenderVM> genderVMList = GenderMapper.INSTANCE.entityListToVMList(genders);
-
-        return new ResponseEntity<>(genderVMList, HttpStatus.OK);
+        return new ResponseEntity<>(genders, HttpStatus.OK);
     }
 
 }

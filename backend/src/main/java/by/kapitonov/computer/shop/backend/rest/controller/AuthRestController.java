@@ -56,7 +56,7 @@ public class AuthRestController {
     @PostMapping("/registration")
     public ResponseEntity<ApiResponse> registration(@RequestBody SignUpVm signUpVm) {
 
-        UserDTO userDTO = UserMapper.INSTANCE.vmToDTO(signUpVm);
+        UserDTO userDTO = UserMapper.signUpVMtoUserDTO(signUpVm);
         userService.createUser(userDTO);
 
         return new ResponseEntity<>(new ApiResponse("User successfully created"), HttpStatus.OK);

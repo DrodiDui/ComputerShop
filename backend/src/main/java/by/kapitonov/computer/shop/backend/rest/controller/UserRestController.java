@@ -24,7 +24,7 @@ public class UserRestController {
     public ResponseEntity<UserVM> getUserById(@PathVariable(name = "id") Long id) {
 
         User user = userService.getUserById(id);
-        UserVM userVM = UserMapper.INSTANCE.userToVM(user);
+        UserVM userVM = UserMapper.userToUserVM(user);
 
         return new ResponseEntity<>(userVM, HttpStatus.OK);
     }

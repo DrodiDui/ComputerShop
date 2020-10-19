@@ -1,7 +1,6 @@
 package by.kapitonov.computer.shop.backend.rest.controller;
 
 import by.kapitonov.computer.shop.backend.model.UserStatus;
-import by.kapitonov.computer.shop.backend.rest.mapper.UserStatusMapper;
 import by.kapitonov.computer.shop.backend.rest.vm.ApiResponse;
 import by.kapitonov.computer.shop.backend.rest.vm.UserStatusVM;
 import by.kapitonov.computer.shop.backend.service.UserStatusService;
@@ -22,11 +21,10 @@ public class UserStatusRestController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<UserStatusVM>> getAll() {
+    public ResponseEntity<List<UserStatus>> getAll() {
         List<UserStatus> userStatuses = statusService.getAllUserStatuses();
-        List<UserStatusVM> userStatusVMList = UserStatusMapper.INSTANCE.entityListToVMList(userStatuses);
 
-        return new ResponseEntity<>(userStatusVMList, HttpStatus.OK);
+        return new ResponseEntity<>(userStatuses, HttpStatus.OK);
     }
 
     @PostMapping()

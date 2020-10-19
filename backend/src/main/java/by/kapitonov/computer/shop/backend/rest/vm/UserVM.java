@@ -7,6 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
+@Builder
 public class UserVM {
 
     private String username;

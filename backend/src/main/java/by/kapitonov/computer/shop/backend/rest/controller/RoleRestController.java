@@ -1,7 +1,6 @@
 package by.kapitonov.computer.shop.backend.rest.controller;
 
 import by.kapitonov.computer.shop.backend.model.Role;
-import by.kapitonov.computer.shop.backend.rest.mapper.RoleMapper;
 import by.kapitonov.computer.shop.backend.rest.vm.ApiResponse;
 import by.kapitonov.computer.shop.backend.rest.vm.RoleVM;
 import by.kapitonov.computer.shop.backend.service.RoleService;
@@ -22,12 +21,11 @@ public class RoleRestController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<RoleVM>> getAllRoles() {
+    public ResponseEntity<List<Role>> getAllRoles() {
 
         List<Role> roles = roleService.getAllRoles();
-        List<RoleVM> roleVMList = RoleMapper.INSTANCE.entityListToVMList(roles);
 
-        return new ResponseEntity<>(roleVMList, HttpStatus.OK);
+        return new ResponseEntity<>(roles, HttpStatus.OK);
     }
 
     @PostMapping()

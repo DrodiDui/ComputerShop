@@ -1,7 +1,6 @@
 package by.kapitonov.computer.shop.backend.rest.controller;
 
 import by.kapitonov.computer.shop.backend.model.SecretQuestion;
-import by.kapitonov.computer.shop.backend.rest.mapper.SecretQuestionMapper;
 import by.kapitonov.computer.shop.backend.rest.vm.ApiResponse;
 import by.kapitonov.computer.shop.backend.rest.vm.SecretQuestionVM;
 import by.kapitonov.computer.shop.backend.service.SecretQuestionService;
@@ -22,12 +21,11 @@ public class SecretQuestionRestController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<SecretQuestionVM>> getAllSecretQuestion() {
+    public ResponseEntity<List<SecretQuestion>> getAllSecretQuestion() {
 
         List<SecretQuestion> secretQuestions = secretQuestionService.getAll();
-        List<SecretQuestionVM> secretQuestionVMList = SecretQuestionMapper.INSTANCE.entityListToVMList(secretQuestions);
 
-        return new ResponseEntity<>(secretQuestionVMList, HttpStatus.OK);
+        return new ResponseEntity<>(secretQuestions, HttpStatus.OK);
     }
 
     @PostMapping
