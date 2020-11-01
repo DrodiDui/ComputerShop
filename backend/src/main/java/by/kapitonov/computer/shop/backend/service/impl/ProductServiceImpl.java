@@ -1,15 +1,13 @@
 package by.kapitonov.computer.shop.backend.service.impl;
 
-import by.kapitonov.computer.shop.backend.exception.ProductCategoryNotFoundException;
 import by.kapitonov.computer.shop.backend.exception.ProductNotFoundException;
-import by.kapitonov.computer.shop.backend.exception.ProductStatusNotFoundException;
-import by.kapitonov.computer.shop.backend.model.Product;
-import by.kapitonov.computer.shop.backend.model.ProductCategory;
-import by.kapitonov.computer.shop.backend.model.ProductStatus;
-import by.kapitonov.computer.shop.backend.repository.ProductCategoryRepository;
+import by.kapitonov.computer.shop.backend.model.product.Product;
+import by.kapitonov.computer.shop.backend.model.product.detail.ProductCategory;
+import by.kapitonov.computer.shop.backend.model.product.detail.ProductStatus;
 import by.kapitonov.computer.shop.backend.repository.ProductRepository;
-import by.kapitonov.computer.shop.backend.repository.ProductStatusRepository;
+import by.kapitonov.computer.shop.backend.service.ProductCategoryService;
 import by.kapitonov.computer.shop.backend.service.ProductService;
+import by.kapitonov.computer.shop.backend.service.ProductStatusService;
 import by.kapitonov.computer.shop.backend.service.dto.ProductDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,22 +17,22 @@ import org.springframework.stereotype.Service;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
-    private final ProductStatusRepository productStatusRepository;
-    private final ProductCategoryRepository categoryRepository;
+    private final ProductStatusService productStatusService;
+    private final ProductCategoryService productCategoryService;
 
     public ProductServiceImpl(ProductRepository productRepository,
-                              ProductStatusRepository productStatusRepository,
-                              ProductCategoryRepository categoryRepository) {
+                              ProductStatusService productStatusService,
+                              ProductCategoryService productCategoryService) {
         this.productRepository = productRepository;
-        this.productStatusRepository = productStatusRepository;
-        this.categoryRepository = categoryRepository;
+        this.productStatusService = productStatusService;
+        this.productCategoryService = productCategoryService;
     }
 
     @Override
     public Page<Product> getAllByCategory(String category, Pageable pageable) {
         Page<Product> products = productRepository.findAllByProductCategory(category, pageable);
 
-        if (products.getContent().isEmpty()) {
+        if (!products.hasContent()) {
             throw new ProductNotFoundException("Products haven't been found");
         }
 
@@ -75,16 +73,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private ProductCategory getProductCategory(String productCategory) {
-        return categoryRepository.findByCategoryName(productCategory)
-                .orElseThrow(
-                        () -> new ProductCategoryNotFoundException()
-                );
+        return productCategoryService.getByCategoryName(productCategory);
     }
 
     private ProductStatus getProductStatus(String productStatus) {
-        return productStatusRepository.findByStatusName(productStatus)
-                .orElseThrow(
-                        () -> new ProductStatusNotFoundException("Product status hasn't been found")
-                );
+        return productStatusService.getByStatusName(productStatus);
     }
 }

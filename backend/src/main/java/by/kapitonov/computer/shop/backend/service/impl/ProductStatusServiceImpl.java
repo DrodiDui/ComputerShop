@@ -1,7 +1,8 @@
 package by.kapitonov.computer.shop.backend.service.impl;
 
-import by.kapitonov.computer.shop.backend.exception.ProductStatusNotFoundException;
-import by.kapitonov.computer.shop.backend.model.ProductStatus;
+import by.kapitonov.computer.shop.backend.exception.ProductDetailsAlreadyExists;
+import by.kapitonov.computer.shop.backend.exception.ProductDetailsNotFoundException;
+import by.kapitonov.computer.shop.backend.model.product.detail.ProductStatus;
 import by.kapitonov.computer.shop.backend.repository.ProductStatusRepository;
 import by.kapitonov.computer.shop.backend.service.ProductStatusService;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,18 @@ public class ProductStatusServiceImpl implements ProductStatusService {
     }
 
     @Override
+    public ProductStatus getByStatusName(String statusName) {
+        return statusRepository.findByStatusName(statusName)
+                .orElseThrow(
+                        () -> new ProductDetailsNotFoundException("Product status hasn't been found")
+                );
+    }
+
+    @Override
     public ProductStatus create(String statusName) {
+        if (statusRepository.existsByStatusName(statusName)) {
+            throw new ProductDetailsAlreadyExists("Product status already exists");
+        }
         return statusRepository.save(new ProductStatus(statusName));
     }
 }

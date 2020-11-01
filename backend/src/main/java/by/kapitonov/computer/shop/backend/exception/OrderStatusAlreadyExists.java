@@ -1,10 +1,9 @@
 package by.kapitonov.computer.shop.backend.exception;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j;
 
+@Log4j
 public class OrderStatusAlreadyExists extends RuntimeException {
-    private static final Logger LOGGER = LoggerFactory.getLogger(OrderStatusAlreadyExists.class);
 
     public OrderStatusAlreadyExists() {
         super();
@@ -12,12 +11,12 @@ public class OrderStatusAlreadyExists extends RuntimeException {
 
     public OrderStatusAlreadyExists(String message) {
         super(message);
-        LOGGER.error(message);
+        log.error(message);
     }
 
     public OrderStatusAlreadyExists(String message, Throwable cause) {
         super(message, cause);
-        LOGGER.error(message, cause);
+        log.error(message, cause);
     }
 
     public OrderStatusAlreadyExists(Throwable cause) {
@@ -26,7 +25,7 @@ public class OrderStatusAlreadyExists extends RuntimeException {
 
     protected OrderStatusAlreadyExists(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
-        LOGGER.error(message, cause);
+        log.error(message, cause);
     }
 
 

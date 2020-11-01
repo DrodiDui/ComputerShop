@@ -48,7 +48,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<User> getAllUsers(Pageable pageable) {
-        return userRepository.findAll(pageable);
+        Page<User> userPage = userRepository.findAll(pageable);
+
+        if (!userPage.hasContent()) {
+            throw new UserNotFoundException("Users haven't been found");
+        }
+
+        return userPage;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package by.kapitonov.computer.shop.backend.repository;
 
-import by.kapitonov.computer.shop.backend.model.ProductStatus;
+import by.kapitonov.computer.shop.backend.model.product.detail.ProductStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,4 +11,5 @@ public interface ProductStatusRepository extends JpaRepository<ProductStatus, Lo
 
     Optional<ProductStatus> findByStatusName(String statusName);
 
+    boolean existsByStatusName(String statusName);
 }

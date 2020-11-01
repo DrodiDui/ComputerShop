@@ -1,8 +1,12 @@
-package by.kapitonov.computer.shop.backend.model;
+package by.kapitonov.computer.shop.backend.model.product;
 
+import by.kapitonov.computer.shop.backend.model.AuditEntity;
+import by.kapitonov.computer.shop.backend.model.product.detail.ProductCategory;
+import by.kapitonov.computer.shop.backend.model.product.detail.ProductStatus;
+import by.kapitonov.computer.shop.backend.model.Review;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -17,6 +21,7 @@ import java.util.List;
 @EqualsAndHashCode
 @ToString
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 public class Product extends AuditEntity {
 
     @Column(name = "product_name", nullable = false, length = 50)

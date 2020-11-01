@@ -1,7 +1,8 @@
 package by.kapitonov.computer.shop.backend.service.impl;
 
-import by.kapitonov.computer.shop.backend.exception.ProductCategoryNotFoundException;
-import by.kapitonov.computer.shop.backend.model.ProductCategory;
+import by.kapitonov.computer.shop.backend.exception.ProductDetailsAlreadyExists;
+import by.kapitonov.computer.shop.backend.exception.ProductDetailsNotFoundException;
+import by.kapitonov.computer.shop.backend.model.product.detail.ProductCategory;
 import by.kapitonov.computer.shop.backend.repository.ProductCategoryRepository;
 import by.kapitonov.computer.shop.backend.service.ProductCategoryService;
 import org.springframework.stereotype.Service;
@@ -22,14 +23,25 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
         List<ProductCategory> productCategories = categoryRepository.findAll();
 
         if (productCategories.isEmpty()) {
-            throw new ProductCategoryNotFoundException("Products haven't been found");
+            throw new ProductDetailsNotFoundException("Product categories haven't been found");
         }
 
         return productCategories;
     }
 
     @Override
+    public ProductCategory getByCategoryName(String categoryName) {
+        return categoryRepository.findByCategoryName(categoryName)
+                .orElseThrow(
+                        () -> new ProductDetailsNotFoundException("Product category hasn't been found")
+                );
+    }
+
+    @Override
     public ProductCategory create(String categoryName) {
+        if (categoryRepository.existsByCategoryName(categoryName)) {
+            throw new ProductDetailsAlreadyExists("Product category already exists");
+        }
         return categoryRepository.save(new ProductCategory(categoryName));
     }
 }

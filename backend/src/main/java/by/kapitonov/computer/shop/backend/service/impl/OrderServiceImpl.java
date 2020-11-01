@@ -4,7 +4,7 @@ import by.kapitonov.computer.shop.backend.exception.OrderNotFoundException;
 import by.kapitonov.computer.shop.backend.exception.UserNotFoundException;
 import by.kapitonov.computer.shop.backend.model.Order;
 import by.kapitonov.computer.shop.backend.model.OrderStatus;
-import by.kapitonov.computer.shop.backend.model.Product;
+import by.kapitonov.computer.shop.backend.model.product.Product;
 import by.kapitonov.computer.shop.backend.model.User;
 import by.kapitonov.computer.shop.backend.repository.OrderRepository;
 import by.kapitonov.computer.shop.backend.repository.OrderStatusRepository;

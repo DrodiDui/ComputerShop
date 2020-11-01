@@ -1,10 +1,9 @@
 package by.kapitonov.computer.shop.backend.exception;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j;
 
+@Log4j
 public class SecretQuestionNotFoundException extends RuntimeException {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SecretQuestionNotFoundException.class);
 
     public SecretQuestionNotFoundException() {
         super();
@@ -12,12 +11,12 @@ public class SecretQuestionNotFoundException extends RuntimeException {
 
     public SecretQuestionNotFoundException(String message) {
         super(message);
-        LOGGER.error(message);
+        log.error(message);
     }
 
     public SecretQuestionNotFoundException(String message, Throwable cause) {
         super(message, cause);
-        LOGGER.error(message, cause);
+        log.error(message, cause);
     }
 
     public SecretQuestionNotFoundException(Throwable cause) {
@@ -26,6 +25,6 @@ public class SecretQuestionNotFoundException extends RuntimeException {
 
     protected SecretQuestionNotFoundException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
-        LOGGER.error(message, cause);
+        log.error(message, cause);
     }
 }

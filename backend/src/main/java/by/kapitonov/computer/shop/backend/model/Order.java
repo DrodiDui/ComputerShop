@@ -1,6 +1,8 @@
 package by.kapitonov.computer.shop.backend.model;
 
+import by.kapitonov.computer.shop.backend.model.product.Product;
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import java.util.List;
 @EqualsAndHashCode
 @ToString
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 public class Order extends AuditEntity {
 
     @ManyToMany(fetch = FetchType.LAZY)

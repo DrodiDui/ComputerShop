@@ -1,8 +1,7 @@
 package by.kapitonov.computer.shop.backend.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import by.kapitonov.computer.shop.backend.model.product.Product;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 

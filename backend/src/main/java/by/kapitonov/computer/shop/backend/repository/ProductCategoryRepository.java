@@ -1,6 +1,6 @@
 package by.kapitonov.computer.shop.backend.repository;
 
-import by.kapitonov.computer.shop.backend.model.ProductCategory;
+import by.kapitonov.computer.shop.backend.model.product.detail.ProductCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,4 +11,5 @@ public interface ProductCategoryRepository extends JpaRepository<ProductCategory
 
     Optional<ProductCategory> findByCategoryName(String categoryName);
 
+    boolean existsByCategoryName(String categoryName);
 }

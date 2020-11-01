@@ -1,10 +1,9 @@
 package by.kapitonov.computer.shop.backend.exception;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j;
 
+@Log4j
 public class ProductNotFoundException extends RuntimeException {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProductNotFoundException.class);
 
     public ProductNotFoundException() {
         super();
@@ -12,12 +11,12 @@ public class ProductNotFoundException extends RuntimeException {
 
     public ProductNotFoundException(String message) {
         super(message);
-        LOGGER.error(message);
+        log.error(message);
     }
 
     public ProductNotFoundException(String message, Throwable cause) {
         super(message, cause);
-        LOGGER.error(message, cause);
+        log.error(message, cause);
     }
 
     public ProductNotFoundException(Throwable cause) {
@@ -26,6 +25,6 @@ public class ProductNotFoundException extends RuntimeException {
 
     protected ProductNotFoundException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
-        LOGGER.error(message, cause);
+        log.error(message, cause);
     }
 }

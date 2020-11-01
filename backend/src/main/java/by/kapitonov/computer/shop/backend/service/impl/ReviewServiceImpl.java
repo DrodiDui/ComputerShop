@@ -3,7 +3,7 @@ package by.kapitonov.computer.shop.backend.service.impl;
 import by.kapitonov.computer.shop.backend.exception.ProductNotFoundException;
 import by.kapitonov.computer.shop.backend.exception.ReviewNotFoundException;
 import by.kapitonov.computer.shop.backend.exception.UserNotFoundException;
-import by.kapitonov.computer.shop.backend.model.Product;
+import by.kapitonov.computer.shop.backend.model.product.Product;
 import by.kapitonov.computer.shop.backend.model.Review;
 import by.kapitonov.computer.shop.backend.model.User;
 import by.kapitonov.computer.shop.backend.repository.ProductRepository;
