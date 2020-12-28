@@ -7,6 +7,7 @@ import java.util.List;
 public interface MotherBoardFormFactorService {
 
     List<MotherboardFormFactor> getAll();
+    List<String> getAllFormFactorNames();
 
     MotherboardFormFactor getByFormFactorName(String formFactorName);
 

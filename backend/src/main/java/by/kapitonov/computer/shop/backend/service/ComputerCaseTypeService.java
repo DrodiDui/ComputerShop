@@ -7,6 +7,7 @@ import java.util.List;
 public interface ComputerCaseTypeService {
 
     List<ComputerCaseType> getAll();
+    List<String> getComputerCaseTypesName();
 
     ComputerCaseType getByTypeName(String caseTypeName);
 

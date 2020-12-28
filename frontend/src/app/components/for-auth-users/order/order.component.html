@@ -1,0 +1,25 @@
+<ul class="list-group list-group-horizontal" *ngFor="let product of products">
+  <li class="list-group-item">{{product.productName}}</li>
+  <li class="list-group-item">{{product.price}}</li>
+  <li class="list-group-item">{{product.brand}}</li>
+  <li class="list-group-item">{{product.ageOfRelease}}</li>
+
+  <form>
+    <button class="btn" (click)="deleteProduct(product.id)" value=" - "></button>
+  </form>
+
+</ul>
+
+<form (ngSubmit)="createOrder()">
+  <div class="form-group">
+    <label for="SecretQuestion">Secret question</label>
+    <select id="SecretQuestion" class="form-control" name="secretQuestion" [(ngModel)]="paymentMethod">
+      <option *ngFor="let payment of payments" value="{{payment}}" >{{payment}}</option>
+    </select>
+  </div>
+
+  <button type="submit" class="btn btn-primary">
+    make an order
+  </button>
+
+</form>

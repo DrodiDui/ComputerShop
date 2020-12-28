@@ -1,44 +1,51 @@
 package by.kapitonov.computer.shop.backend.service.impl;
 
 import by.kapitonov.computer.shop.backend.exception.OrderNotFoundException;
-import by.kapitonov.computer.shop.backend.exception.UserNotFoundException;
 import by.kapitonov.computer.shop.backend.model.Order;
 import by.kapitonov.computer.shop.backend.model.OrderStatus;
-import by.kapitonov.computer.shop.backend.model.product.Product;
+import by.kapitonov.computer.shop.backend.model.PaymentMethod;
 import by.kapitonov.computer.shop.backend.model.User;
+import by.kapitonov.computer.shop.backend.model.product.Product;
 import by.kapitonov.computer.shop.backend.repository.OrderRepository;
 import by.kapitonov.computer.shop.backend.repository.OrderStatusRepository;
-import by.kapitonov.computer.shop.backend.repository.UserRepository;
+import by.kapitonov.computer.shop.backend.repository.ProductRepository;
 import by.kapitonov.computer.shop.backend.service.OrderService;
+import by.kapitonov.computer.shop.backend.service.PaymentMethodService;
 import by.kapitonov.computer.shop.backend.service.ProductService;
+import by.kapitonov.computer.shop.backend.service.UserService;
 import by.kapitonov.computer.shop.backend.service.dto.OrderDTO;
-import by.kapitonov.computer.shop.backend.util.SecurityUtil;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final OrderStatusRepository orderStatusRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final ProductService productService;
+    private final ProductRepository productRepository;
+    private final PaymentMethodService paymentMethodService;
 
     public OrderServiceImpl(OrderRepository orderRepository,
                             OrderStatusRepository orderStatusRepository,
-                            UserRepository userRepository,
-                            ProductService productService) {
+                            UserService userService,
+                            ProductService productService,
+                            ProductRepository productRepository,
+                            PaymentMethodService paymentMethodService) {
         this.orderRepository = orderRepository;
         this.orderStatusRepository = orderStatusRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
         this.productService = productService;
+        this.productRepository = productRepository;
+        this.paymentMethodService = paymentMethodService;
     }
 
     @Override
-    public List<Order> getAllOrdersForCurrentUser() {
-        List<Order> orders = orderRepository.findByUser(getCurrentUser());
+    public List<Order> getAllOrdersForCurrentUser(Long id) {
+        List<Order> orders = orderRepository.findByUser(getCurrentUser(id));
 
         if (orders.isEmpty()) {
             throw new OrderNotFoundException();
@@ -59,14 +66,14 @@ public class OrderServiceImpl implements OrderService {
     public Order create(OrderDTO orderDTO) {
 
         Order order = Order.builder()
-                .orderStatus(getOrderStatus(orderDTO.getOrderStatus()))
-                .product(getProducts(orderDTO.getProductId()))
-                .user(getCurrentUser())
+                .orderStatus(getOrderStatus("in stock"))
+                .product(getProducts(orderDTO.getProductIds()))
+                .user(getCurrentUser(orderDTO.getUserId()))
+                .paymentMethod(getPaymentMethod(orderDTO.getPaymentMethod()))
                 .build();
 
         return orderRepository.save(order);
     }
-
 
     private OrderStatus getOrderStatus(String status) {
         return orderStatusRepository.findByStatusName(status)
@@ -75,19 +82,24 @@ public class OrderServiceImpl implements OrderService {
                 );
     }
 
-    private User getCurrentUser() {
-        return userRepository.findById(SecurityUtil.getUserId())
-                .orElseThrow(
-                        () -> new UserNotFoundException("User hasn't been found")
-                );
+    private User getCurrentUser(Long id) {
+        return userService.getUserById(id);
     }
 
-    private List<Product> getProducts(List<Long> productId) {
-        List<Product> products = new ArrayList<>();
-        for (int i = 0; i < productId.size(); i++) {
-            products.add(productService.getOneById(productId.get(i)));
+    private List<Product> getProducts(List<Long> productIds) {
+        if (productIds.isEmpty()) {
+            return null;
         }
-        return products;
+        return productIds
+                .stream()
+                .map(productId -> {
+                    return productService.getOneById(productId);
+                })
+                .collect(Collectors.toList());
+    }
+
+    private PaymentMethod getPaymentMethod(String paymentMethod) {
+        return paymentMethodService.getOneByName(paymentMethod);
     }
 
 }

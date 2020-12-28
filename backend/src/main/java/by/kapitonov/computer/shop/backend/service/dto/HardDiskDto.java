@@ -9,7 +9,7 @@ import javax.persistence.Column;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class HardDiskDto {
+public class HardDiskDTO {
 
     private Integer diskSize;
     private Integer spindleSpeed;

@@ -7,6 +7,7 @@ import java.util.List;
 public interface GenderService {
 
     List<Gender> getAll();
+    List<String> getAllGenderNames();
     Gender create(String genderName);
 
 }

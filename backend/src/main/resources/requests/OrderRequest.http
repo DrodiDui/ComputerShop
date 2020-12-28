@@ -1,0 +1,20 @@
+POST http://localhost:8090/api/orders
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "productId" : [
+    1,
+    2
+  ],
+  "paymentMethod": "cash payment"
+}
+
+
+###
+GET http://localhost:8090/api/orders
+Accept: application/json
+
+###
+GET http://localhost:8090/api/orders/all/orders
+Accept: application/json

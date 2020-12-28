@@ -12,6 +12,6 @@ public class UserVM {
 
     private String username;
     private String email;
-    private CustomerVM customerVM;
+    private CustomerVM customer;
 
 }

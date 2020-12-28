@@ -8,6 +8,7 @@ import by.kapitonov.computer.shop.backend.service.OrderStatusService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderStatusServiceImpl implements OrderStatusService {
@@ -26,6 +27,20 @@ public class OrderStatusServiceImpl implements OrderStatusService {
             throw new OrderStatusNotFoundException("Orders hasn't been found");
         }
         return null;
+    }
+
+    @Override
+    public List<String> getAllOrderStatusNames() {
+        List<String> orderStatusNames = orderStatusRepository.findAll()
+                .stream()
+                .map(OrderStatus::getStatusName)
+                .collect(Collectors.toList());
+
+        if (orderStatusNames.isEmpty()) {
+            throw new OrderStatusNotFoundException("Order status names haven't been found");
+        }
+
+        return orderStatusNames;
     }
 
     @Override

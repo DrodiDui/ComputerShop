@@ -7,6 +7,7 @@ import java.util.List;
 public interface OrderStatusService {
 
     List<OrderStatus> getAll();
+    List<String> getAllOrderStatusNames();
     OrderStatus create(String status);
 
 }

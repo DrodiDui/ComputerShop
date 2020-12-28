@@ -5,6 +5,7 @@ import by.kapitonov.computer.shop.backend.model.product.Product;
 import by.kapitonov.computer.shop.backend.model.product.detail.ProductCategory;
 import by.kapitonov.computer.shop.backend.model.product.detail.ProductStatus;
 import by.kapitonov.computer.shop.backend.repository.ProductRepository;
+import by.kapitonov.computer.shop.backend.service.ImageService;
 import by.kapitonov.computer.shop.backend.service.ProductCategoryService;
 import by.kapitonov.computer.shop.backend.service.ProductService;
 import by.kapitonov.computer.shop.backend.service.ProductStatusService;
@@ -13,19 +14,24 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final ProductStatusService productStatusService;
     private final ProductCategoryService productCategoryService;
+    private final ImageService imageService;
 
     public ProductServiceImpl(ProductRepository productRepository,
                               ProductStatusService productStatusService,
-                              ProductCategoryService productCategoryService) {
+                              ProductCategoryService productCategoryService,
+                              ImageService imageService) {
         this.productRepository = productRepository;
         this.productStatusService = productStatusService;
         this.productCategoryService = productCategoryService;
+        this.imageService = imageService;
     }
 
     @Override
@@ -33,6 +39,28 @@ public class ProductServiceImpl implements ProductService {
         Page<Product> products = productRepository.findAllByProductCategory(category, pageable);
 
         if (!products.hasContent()) {
+            throw new ProductNotFoundException("Products haven't been found");
+        }
+
+        return products;
+    }
+
+    @Override
+    public List<Product> getAllProductByName(String productName) {
+        List<Product> products =  productRepository.findAllByProductNameContains(productName);
+
+        if (products.isEmpty()) {
+            throw new ProductNotFoundException("Products haven't been found");
+        }
+
+        return products;
+    }
+
+    @Override
+    public List<Product> getAllProductsByIds(List<Long> ids) {
+        List<Product> products = productRepository.findAllById(ids);
+
+        if (products.isEmpty()) {
             throw new ProductNotFoundException("Products haven't been found");
         }
 
@@ -67,6 +95,7 @@ public class ProductServiceImpl implements ProductService {
                 .countInStock(productDTO.getCountInStock())
                 .productCategory(getProductCategory(productDTO.getProductCategory()))
                 .productStatus(getProductStatus(productDTO.getProductStatus()))
+                .previewImage(imageService.create(productDTO.getPreviewImage()))
                 .build();
 
         return productRepository.save(product);

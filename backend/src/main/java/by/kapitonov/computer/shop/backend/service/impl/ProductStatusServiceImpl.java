@@ -8,6 +8,7 @@ import by.kapitonov.computer.shop.backend.service.ProductStatusService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductStatusServiceImpl implements ProductStatusService {
@@ -23,10 +24,25 @@ public class ProductStatusServiceImpl implements ProductStatusService {
         List<ProductStatus> productStatuses = statusRepository.findAll();
 
         if (productStatuses.isEmpty()) {
-            throw new ProductStatusNotFoundException("Product statuses haven't been found");
+            throw new ProductDetailsNotFoundException("Product statuses haven't been found");
         }
 
         return productStatuses;
+    }
+
+    @Override
+    public List<String> getAllProductStatsNames() {
+
+        List<String> productStatusNames = statusRepository.findAll()
+                .stream()
+                .map(ProductStatus::getStatusName)
+                .collect(Collectors.toList());
+
+        if (productStatusNames.isEmpty()) {
+            throw new ProductDetailsNotFoundException("Product stats names haven't been found");
+        }
+
+        return productStatusNames;
     }
 
     @Override

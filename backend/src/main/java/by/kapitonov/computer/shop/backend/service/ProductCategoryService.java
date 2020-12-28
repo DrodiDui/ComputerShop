@@ -7,6 +7,7 @@ import java.util.List;
 public interface ProductCategoryService {
 
     List<ProductCategory> getAll();
+    List<String> getAllCategoryNames();
 
     ProductCategory getByCategoryName(String categoryName);
 

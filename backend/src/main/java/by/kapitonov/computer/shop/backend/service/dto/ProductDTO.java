@@ -1,6 +1,8 @@
 package by.kapitonov.computer.shop.backend.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @NoArgsConstructor
@@ -18,5 +20,6 @@ public class ProductDTO {
     private Integer countInStock;
     private String productCategory;
     private String productStatus;
+    private MultipartFile previewImage;
 
 }

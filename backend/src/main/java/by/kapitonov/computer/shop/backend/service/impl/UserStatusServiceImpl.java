@@ -29,6 +29,14 @@ public class UserStatusServiceImpl implements UserStatusService {
     }
 
     @Override
+    public UserStatus getUserStatusByName(String statusName) {
+        return statusRepository.findByStatusName(statusName)
+                .orElseThrow(
+                        () -> new UserStatusNotFoundException("User status hasn't been found")
+                );
+    }
+
+    @Override
     public UserStatus create(String statusName) {
         return statusRepository.save(new UserStatus(statusName));
     }

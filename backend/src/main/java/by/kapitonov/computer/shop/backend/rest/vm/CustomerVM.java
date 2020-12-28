@@ -13,6 +13,7 @@ public class CustomerVM {
     private String firstName;
     private String lastName;
     private String gender;
+    private String cellPhone;
     private String country;
     private String city;
     private String street;

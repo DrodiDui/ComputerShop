@@ -13,6 +13,15 @@ spring:
     show-sql: false
     hibernate:
       ddl-auto: validate
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size:  200MB
+      max-request-size: 250MB
 jwt:
   security:
     key: qwerty

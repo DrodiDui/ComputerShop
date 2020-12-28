@@ -7,9 +7,9 @@ import java.util.List;
 public interface SocketService {
 
     List<Socket> getAll();
+    List<String> getAllSocketNames();
 
     Socket getSocketByName(String socketName);
 
     Socket create(String socketName);
-
 }

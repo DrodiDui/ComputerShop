@@ -7,6 +7,7 @@ import java.util.List;
 public interface ProductStatusService {
 
     List<ProductStatus> getAll();
+    List<String> getAllProductStatsNames();
 
     ProductStatus getByStatusName(String statusName);
 

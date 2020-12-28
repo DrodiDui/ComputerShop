@@ -10,5 +10,7 @@ import java.util.Optional;
 public interface HardDiskRepository extends JpaRepository<HardDisk, Long> {
 
     Optional<HardDisk> findByProduct_ProductName(String productName);
+    
+    
 
 }

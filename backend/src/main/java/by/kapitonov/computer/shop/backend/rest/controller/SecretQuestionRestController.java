@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/secret-questions")
@@ -21,11 +23,11 @@ public class SecretQuestionRestController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<SecretQuestion>> getAllSecretQuestion() {
+    public ResponseEntity<List<String>> getAllSecretQuestion() {
 
-        List<SecretQuestion> secretQuestions = secretQuestionService.getAll();
+        List<String> questions = secretQuestionService.getSecretQuestionsName();
 
-        return new ResponseEntity<>(secretQuestions, HttpStatus.OK);
+        return new ResponseEntity<>(questions, HttpStatus.OK);
     }
 
     @PostMapping

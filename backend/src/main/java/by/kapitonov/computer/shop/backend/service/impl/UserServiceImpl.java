@@ -2,19 +2,16 @@ package by.kapitonov.computer.shop.backend.service.impl;
 
 import by.kapitonov.computer.shop.backend.constant.RoleConstants;
 import by.kapitonov.computer.shop.backend.constant.UserStatusConstants;
-import by.kapitonov.computer.shop.backend.exception.RoleNotFoundException;
-import by.kapitonov.computer.shop.backend.exception.SecretQuestionNotFoundException;
 import by.kapitonov.computer.shop.backend.exception.UserNotFoundException;
-import by.kapitonov.computer.shop.backend.exception.UserStatusNotFoundException;
 import by.kapitonov.computer.shop.backend.model.*;
-import by.kapitonov.computer.shop.backend.repository.RoleRepository;
-import by.kapitonov.computer.shop.backend.repository.SecretQuestionRepository;
 import by.kapitonov.computer.shop.backend.repository.UserRepository;
-import by.kapitonov.computer.shop.backend.repository.UserStatusRepository;
+import by.kapitonov.computer.shop.backend.service.RoleService;
+import by.kapitonov.computer.shop.backend.service.SecretQuestionService;
 import by.kapitonov.computer.shop.backend.service.UserService;
+import by.kapitonov.computer.shop.backend.service.UserStatusService;
 import by.kapitonov.computer.shop.backend.service.dto.UserDTO;
-import by.kapitonov.computer.shop.backend.util.RandomUtil;
-import by.kapitonov.computer.shop.backend.util.SecurityUtil;
+import by.kapitonov.computer.shop.backend.util.RandomUtils;
+import by.kapitonov.computer.shop.backend.util.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -30,20 +27,20 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final RoleRepository roleRepository;
-    private final UserStatusRepository statusRepository;
-    private final SecretQuestionRepository secretQuestionRepository;
+    private final RoleService roleService;
+    private final UserStatusService userStatusService;
+    private final SecretQuestionService secretQuestionService;
 
     public UserServiceImpl(UserRepository userRepository,
                            PasswordEncoder passwordEncoder,
-                           RoleRepository roleRepository,
-                           UserStatusRepository statusRepository,
-                           SecretQuestionRepository secretQuestionRepository) {
+                           RoleService roleService,
+                           UserStatusService userStatusService,
+                           SecretQuestionService secretQuestionService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.roleRepository = roleRepository;
-        this.statusRepository = statusRepository;
-        this.secretQuestionRepository = secretQuestionRepository;
+        this.roleService = roleService;
+        this.userStatusService = userStatusService;
+        this.secretQuestionService = secretQuestionService;
     }
 
     @Override
@@ -81,7 +78,7 @@ public class UserServiceImpl implements UserService {
                 .map(user -> {
                     user.setActivationCode(null);
                     user.setStatus(
-                            getUserStatus(UserStatusConstants.ACTIVE)
+                            userStatusService.getUserStatusByName(UserStatusConstants.ACTIVE)
                     );
                     return userRepository.save(user);
                 })
@@ -97,23 +94,23 @@ public class UserServiceImpl implements UserService {
         User user = User.builder()
                 .username(userDTO.getUsername())
                 .email(userDTO.getEmail())
-                .role(getRole(userDTO.getRole()))
+                .role(roleService.getRoleByRoleName(userDTO.getRole()))
                 .customer(Customer.builder().build())
                 .build();
 
         if (userDTO.getPassword().isEmpty()) {
 
-            String password = RandomUtil.generatePassword();
+            String password = RandomUtils.generatePassword();
             user.setPassword(passwordEncoder.encode(password));
             user.setActivationCode(UUID.randomUUID().toString());
-            user.setStatus(getUserStatus(UserStatusConstants.INACTIVE));
+            user.setStatus(userStatusService.getUserStatusByName(UserStatusConstants.INACTIVE));
 
             //send activation message email
 
         } else {
 
             user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-            user.setStatus(getUserStatus(UserStatusConstants.ACTIVE));
+            user.setStatus(userStatusService.getUserStatusByName(UserStatusConstants.ACTIVE));
 
             //send activation message email method
 
@@ -130,10 +127,10 @@ public class UserServiceImpl implements UserService {
                 .email(userDTO.getEmail())
                 .password(passwordEncoder.encode(userDTO.getPassword()))
                 .activationCode(UUID.randomUUID().toString())
-                .role(getRole(RoleConstants.USER))
-                .status(getUserStatus(UserStatusConstants.INACTIVE))
+                .role(roleService.getRoleByRoleName(RoleConstants.USER))
+                .status(userStatusService.getUserStatusByName(UserStatusConstants.INACTIVE))
                 .customer(Customer.builder().build())
-                .secretQuestion(getSecretQuestion(userDTO.getSecretQuestion()))
+                .secretQuestion(secretQuestionService.getSecretQuestionByName(userDTO.getSecretQuestion()))
                 .secretQuestionAnswer(userDTO.getSecretQuestionAnswer())
                 .build();
 
@@ -145,7 +142,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User passwordReset(String oldPassword, String newPassword) {
         LOGGER.info("RESET USER PASSWORD");
-        return userRepository.findById(SecurityUtil.getUserId())
+        return userRepository.findById(SecurityUtils.getUserId())
                 .filter(passwordEncoder.encode(oldPassword)::equals)
                 .map(user -> {
                     user.setPassword(passwordEncoder.encode(newPassword));
@@ -158,9 +155,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User changeUserSecretQuestionAndAnswer(String secretQuestion, String questionAnswer) {
-        return userRepository.findById(SecurityUtil.getUserId())
+        return userRepository.findById(SecurityUtils.getUserId())
                 .map(user -> {
-                    user.setSecretQuestion(getSecretQuestion(secretQuestion));
+                    user.setSecretQuestion(secretQuestionService.getSecretQuestionByName(secretQuestion));
                     user.setSecretQuestionAnswer(questionAnswer);
                     return userRepository.save(user);
                 })
@@ -172,10 +169,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User changeUserStatusToDelete() {
         LOGGER.info("CHANGE USER STATUS TO DELETE");
-        return userRepository.findById(SecurityUtil.getUserId())
+        return userRepository.findById(SecurityUtils.getUserId())
                 .map(user -> {
                     user.setActivationCode(UUID.randomUUID().toString());
-                    user.setStatus(getUserStatus(UserStatusConstants.DELETED));
+                    user.setStatus(userStatusService.getUserStatusByName(UserStatusConstants.DELETED));
                     //send message email
                     return userRepository.save(user);
                 })
@@ -188,26 +185,5 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(Long id) {
         LOGGER.info("DELETE USER ACCOUNT BY ID: {}", id);
         userRepository.deleteById(id);
-    }
-
-    private UserStatus getUserStatus(String statusName) {
-        return statusRepository.findByStatusName(statusName)
-                .orElseThrow(
-                        () -> new UserStatusNotFoundException("User status hasn't been found")
-                );
-    }
-
-    private Role getRole(String roleName) {
-        return roleRepository.findByRoleName(roleName)
-                .orElseThrow(
-                        () -> new RoleNotFoundException("Role hasn't been found")
-                );
-    }
-
-    private SecretQuestion getSecretQuestion(String secretQuestion) {
-        return secretQuestionRepository.findBySecretQuestionName(secretQuestion)
-                .orElseThrow(
-                        () -> new SecretQuestionNotFoundException("Secret question hasn't been fount")
-                );
     }
 }

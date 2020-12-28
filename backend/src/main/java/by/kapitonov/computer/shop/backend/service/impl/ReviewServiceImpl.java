@@ -11,7 +11,7 @@ import by.kapitonov.computer.shop.backend.repository.ReviewRepository;
 import by.kapitonov.computer.shop.backend.repository.UserRepository;
 import by.kapitonov.computer.shop.backend.service.ReviewService;
 import by.kapitonov.computer.shop.backend.service.dto.ReviewDTO;
-import by.kapitonov.computer.shop.backend.util.SecurityUtil;
+import by.kapitonov.computer.shop.backend.util.SecurityUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -64,7 +64,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     private User getCurrentUser() {
-        return userRepository.findById(SecurityUtil.getUserId())
+        return userRepository.findById(SecurityUtils.getUserId())
                 .orElseThrow(
                         () -> new UserNotFoundException("User hasn't been found")
                 );

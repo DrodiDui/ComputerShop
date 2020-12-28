@@ -9,7 +9,7 @@ import java.util.Optional;
 @Repository
 public interface MotherboardFormFactorRepository extends JpaRepository<MotherboardFormFactor, Long> {
 
-    Optional<MotherboardFormFactor> findByProduct_ProductName(String formFactorName);
+    Optional<MotherboardFormFactor> findByFormFactorName(String formFactorName);
 
     boolean existsByFormFactorName(String formFactorName);
 

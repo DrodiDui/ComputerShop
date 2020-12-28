@@ -7,6 +7,7 @@ import java.util.List;
 public interface RamMemoryTypeService {
 
     List<RamMemoryType> getAll();
+    List<String> getAllMemoryTypeNames();
 
     RamMemoryType getByMemoryTypeName(String typeName);
 

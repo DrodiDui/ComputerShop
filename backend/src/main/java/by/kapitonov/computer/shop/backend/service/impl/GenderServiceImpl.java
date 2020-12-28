@@ -7,6 +7,7 @@ import by.kapitonov.computer.shop.backend.service.GenderService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GenderServiceImpl implements GenderService {
@@ -26,6 +27,19 @@ public class GenderServiceImpl implements GenderService {
         }
 
         return genders;
+    }
+
+    @Override
+    public List<String> getAllGenderNames() {
+        List<String> genderNames = genderRepository.findAll()
+                .stream()
+                .map(Gender::getGenderName)
+                .collect(Collectors.toList());
+        if (genderNames.isEmpty()) {
+            throw new GenderNotFoundException("Gender names haven't been found");
+        }
+
+        return genderNames;
     }
 
     @Override

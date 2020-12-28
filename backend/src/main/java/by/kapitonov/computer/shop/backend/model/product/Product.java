@@ -1,6 +1,8 @@
 package by.kapitonov.computer.shop.backend.model.product;
 
 import by.kapitonov.computer.shop.backend.model.AuditEntity;
+import by.kapitonov.computer.shop.backend.model.Image;
+import by.kapitonov.computer.shop.backend.model.PaymentMethod;
 import by.kapitonov.computer.shop.backend.model.product.detail.ProductCategory;
 import by.kapitonov.computer.shop.backend.model.product.detail.ProductStatus;
 import by.kapitonov.computer.shop.backend.model.Review;
@@ -45,14 +47,25 @@ public class Product extends AuditEntity {
     @Column(name = "count_in_stock", nullable = false, length = 255)
     private Integer countInStock;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "preview_image_id", referencedColumnName = "id")
+    private Image previewImage;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "product_images",
+            joinColumns = {@JoinColumn(name = "product_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "image_id", referencedColumnName = "id")}
+    )
+    private List<Image> images;
+
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_category_id", referencedColumnName = "id")
     private ProductCategory productCategory;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_id", referencedColumnName = "id")
     private ProductStatus productStatus;
-    
+
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonBackReference
     private List<Review> reviews = new ArrayList<>();

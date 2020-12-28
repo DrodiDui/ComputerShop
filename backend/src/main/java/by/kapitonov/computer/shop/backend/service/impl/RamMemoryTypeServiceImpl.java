@@ -8,6 +8,7 @@ import by.kapitonov.computer.shop.backend.service.RamMemoryTypeService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RamMemoryTypeServiceImpl implements RamMemoryTypeService {
@@ -27,6 +28,20 @@ public class RamMemoryTypeServiceImpl implements RamMemoryTypeService {
         }
 
         return ramMemoryTypes;
+    }
+
+    @Override
+    public List<String> getAllMemoryTypeNames() {
+        List<String> memoryTypeNames = memoryTypeRepository.findAll()
+                .stream()
+                .map(RamMemoryType::getTypeName)
+                .collect(Collectors.toList());
+
+        if (memoryTypeNames.isEmpty()) {
+            throw new ProductDetailsNotFoundException("Ram memory type names haven't been found");
+        }
+
+        return memoryTypeNames;
     }
 
     @Override

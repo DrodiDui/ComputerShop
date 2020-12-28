@@ -8,6 +8,7 @@ import by.kapitonov.computer.shop.backend.service.MotherBoardFormFactorService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MotherBoardFormFactorServiceImpl implements MotherBoardFormFactorService {
@@ -30,8 +31,22 @@ public class MotherBoardFormFactorServiceImpl implements MotherBoardFormFactorSe
     }
 
     @Override
+    public List<String> getAllFormFactorNames() {
+        List<String> formFactorNames = formFactorRepository.findAll()
+                .stream()
+                .map(MotherboardFormFactor::getFormFactorName)
+                .collect(Collectors.toList());
+
+        if (formFactorNames.isEmpty()) {
+            throw new ProductDetailsNotFoundException("Motherboard form factor names hasn't been found");
+        }
+
+        return formFactorNames;
+    }
+
+    @Override
     public MotherboardFormFactor getByFormFactorName(String formFactorName) {
-        return formFactorRepository.findByProduct_ProductName(formFactorName)
+        return formFactorRepository.findByFormFactorName(formFactorName)
                 .orElseThrow(
                         () -> new ProductDetailsNotFoundException("Motherboard form factor hasn't been found")
                 );

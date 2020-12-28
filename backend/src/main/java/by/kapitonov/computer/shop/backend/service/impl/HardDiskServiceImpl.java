@@ -6,7 +6,7 @@ import by.kapitonov.computer.shop.backend.model.product.Product;
 import by.kapitonov.computer.shop.backend.repository.HardDiskRepository;
 import by.kapitonov.computer.shop.backend.service.HardDiskService;
 import by.kapitonov.computer.shop.backend.service.ProductService;
-import by.kapitonov.computer.shop.backend.service.dto.HardDiskDto;
+import by.kapitonov.computer.shop.backend.service.dto.HardDiskDTO;
 import by.kapitonov.computer.shop.backend.service.dto.ProductDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,7 +44,7 @@ public class HardDiskServiceImpl implements HardDiskService {
     }
 
     @Override
-    public HardDisk create(HardDiskDto hardDiskDto) {
+    public HardDisk create(HardDiskDTO hardDiskDto) {
         HardDisk hardDisk = HardDisk.builder()
                 .diskSize(hardDiskDto.getDiskSize())
                 .spindleSpeed(hardDiskDto.getSpindleSpeed())

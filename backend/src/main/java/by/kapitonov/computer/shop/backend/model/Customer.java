@@ -2,6 +2,7 @@ package by.kapitonov.computer.shop.backend.model;
 
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 
@@ -26,9 +27,10 @@ public class Customer extends AuditEntity {
     private String cellPhone;
 
     @Embedded
+    @Nullable
     private Address address;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "gender_id", referencedColumnName = "id")
     private Gender gender;
 

@@ -52,4 +52,7 @@ public class User extends AuditEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Order> orders = new ArrayList<>();
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "photo_id", referencedColumnName = "id")
+    private Image photo;
 }

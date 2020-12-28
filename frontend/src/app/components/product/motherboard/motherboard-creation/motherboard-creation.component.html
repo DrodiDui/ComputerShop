@@ -1,0 +1,99 @@
+<div class="conteiner mt-5 st-5">
+  <div class="row justify-content-center">
+
+    <form (ngSubmit)="save()">
+
+      <div class="form-group">
+        <label for="ProductName">Product name</label>
+        <input type="text" class="form-control" id="ProductName" name="productName"
+               [(ngModel)]="motherboard.product.productName">
+      </div>
+      <div class="form-group">
+        <label for="Description">Description</label>
+        <input type="text" class="form-control" id="Description" name="description"
+               [(ngModel)]="motherboard.product.description">
+      </div>
+      <div class="form-group">
+        <label for="Price">Price</label>
+        <input type="text" class="form-control" id="Price" name="price"
+               [(ngModel)]="motherboard.product.price">
+      </div>
+      <div class="form-group">
+        <label for="Model">Model</label>
+        <input type="text" class="form-control" id="Model" name="Model"
+               [(ngModel)]="motherboard.product.model">
+      </div>
+      <div class="form-group">
+        <label for="Brand">Company</label>
+        <input type="text" class="form-control" id="Brand" name="brand"
+               [(ngModel)]="motherboard.product.brand">
+      </div>
+      <div class="form-group">
+        <label for="AgeOfRelease">Age of Release</label>
+        <input type="text" class="form-control" id="AgeOfRelease" name="ageOfRelease"
+               [(ngModel)]="motherboard.product.ageOfRelease">
+      </div>
+      <div class="form-group">
+        <label for="CountInStock">Count in stock</label>
+        <input type="text" class="form-control" id="CountInStock" name="countInStock"
+               [(ngModel)]="motherboard.product.countInStock">
+      </div>
+      <div class="form-group">
+        <label for="ProductCategory">Product category</label>
+        <select id="ProductCategory" class="form-control" name="memoryType" [(ngModel)]="motherboard.product.productCategory">
+          <option *ngFor="let productCategory of productCategories" value="{{productCategory}}" >{{productCategory}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="ProductStatus">Product status</label>
+        <select id="ProductStatus" class="form-control" name="memoryType" [(ngModel)]="motherboard.product.productStatus">
+          <option *ngFor="let productStatus of productStatuses" value="{{productStatus}}" >{{productStatus}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="PreviewImage">Preview image</label>
+        <input type="file" class="form-control" id="PreviewImage" name="previewImage"
+               [(ngModel)]="previewImage">
+      </div>
+
+      <div class="form-group">
+        <label for="NumberOfMemorySlot">Number of memory slot</label>
+        <input type="text" class="form-control" id="NumberOfMemorySlot" name="numberOfMemorySlot"
+               [(ngModel)]="motherboard.numberOfMemorySlot">
+      </div>
+      <div class="form-group">
+        <label for="MaximumMemorySize">Maximum memory size</label>
+        <input type="test" class="form-control" id="MaximumMemorySize" name="maximumMemorySize"
+               [(ngModel)]="motherboard.maximumMemorySize">
+      </div>
+      <div class="form-group">
+        <label for="MaximumMemoryFrequency">Maximum memory frequency</label>
+        <input type="text" class="form-control" id="MaximumMemoryFrequency" name="maximumMemoryFrequency"
+               [(ngModel)]="motherboard.maximumMemoryFrequency">
+      </div>
+      <div class="form-group">
+        <label for="Socket">Socket</label>
+        <select id="Socket" class="form-control" name="socket" [(ngModel)]="motherboard.socket">
+          <option *ngFor="let socket of sockets" value="{{socket}}" >{{socket}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="FormFactor">Form factor</label>
+        <select id="FormFactor" class="form-control" name="formFactor" [(ngModel)]="motherboard.formFactor">
+          <option *ngFor="let formFactor of formFactors" value="{{formFactor}}" >{{formFactor}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="MemoryType">Memory type</label>
+        <select id="MemoryType" class="form-control" name="memoryType" [(ngModel)]="motherboard.typeOfMemory">
+          <option *ngFor="let memoryType of memoryTypes" value="{{memoryType}}" >{{memoryType}}</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">
+        Registration
+      </button>
+    </form>
+
+
+  </div>
+</div>

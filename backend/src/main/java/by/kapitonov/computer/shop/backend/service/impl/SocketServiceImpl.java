@@ -8,6 +8,7 @@ import by.kapitonov.computer.shop.backend.service.SocketService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SocketServiceImpl implements SocketService {
@@ -27,6 +28,21 @@ public class SocketServiceImpl implements SocketService {
         }
 
         return sockets;
+    }
+
+    @Override
+    public List<String> getAllSocketNames() {
+
+        List<String> socketNames = socketRepository.findAll()
+                .stream()
+                .map(Socket::getSocketName)
+                .collect(Collectors.toList());
+
+        if (socketNames.isEmpty()) {
+            throw new ProductDetailsNotFoundException("Socket names haven't been found");
+        }
+
+        return socketNames;
     }
 
     @Override

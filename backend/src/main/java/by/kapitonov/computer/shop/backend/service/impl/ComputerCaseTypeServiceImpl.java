@@ -8,6 +8,7 @@ import by.kapitonov.computer.shop.backend.service.ComputerCaseTypeService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ComputerCaseTypeServiceImpl implements ComputerCaseTypeService {
@@ -26,6 +27,20 @@ public class ComputerCaseTypeServiceImpl implements ComputerCaseTypeService {
             throw new ProductDetailsNotFoundException("Computer case types haven't been found");
         }
         return caseTypes;
+    }
+
+    @Override
+    public List<String> getComputerCaseTypesName() {
+        List<String> caseTypeNames= caseTypeRepository.findAll()
+                .stream()
+                .map(ComputerCaseType::getCaseTypeName)
+                .collect(Collectors.toList());
+
+        if (caseTypeNames.isEmpty()) {
+            throw new ProductDetailsNotFoundException("Compute case type names hasn't been found");
+        }
+
+        return caseTypeNames;
     }
 
     @Override

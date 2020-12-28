@@ -8,7 +8,7 @@ import by.kapitonov.computer.shop.backend.repository.CustomerRepository;
 import by.kapitonov.computer.shop.backend.repository.GenderRepository;
 import by.kapitonov.computer.shop.backend.service.CustomerService;
 import by.kapitonov.computer.shop.backend.service.dto.CustomerDTO;
-import by.kapitonov.computer.shop.backend.util.SecurityUtil;
+import by.kapitonov.computer.shop.backend.util.SecurityUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,7 +25,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer updateCustomer(CustomerDTO customerDTO) {
-        return customerRepository.findById(SecurityUtil.getUserId())
+        return customerRepository.findById(SecurityUtils.getUserId())
                 .map(customer -> {
                     customer.setFirstName(customerDTO.getFirstName());
                     customer.setLastName(customerDTO.getLastName());

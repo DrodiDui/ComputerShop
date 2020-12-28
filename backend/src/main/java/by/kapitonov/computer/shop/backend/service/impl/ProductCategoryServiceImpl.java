@@ -8,6 +8,7 @@ import by.kapitonov.computer.shop.backend.service.ProductCategoryService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductCategoryServiceImpl implements ProductCategoryService {
@@ -30,6 +31,20 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     }
 
     @Override
+    public List<String> getAllCategoryNames() {
+        List<String> categoryNames = categoryRepository.findAll()
+                .stream()
+                .map(ProductCategory::getCategoryName)
+                .collect(Collectors.toList());
+
+        if (categoryNames.isEmpty()) {
+            throw new ProductDetailsNotFoundException("Product category names haven't been found");
+        }
+
+        return categoryNames;
+    }
+
+    @Override
     public ProductCategory getByCategoryName(String categoryName) {
         return categoryRepository.findByCategoryName(categoryName)
                 .orElseThrow(
@@ -42,6 +57,6 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
         if (categoryRepository.existsByCategoryName(categoryName)) {
             throw new ProductDetailsAlreadyExists("Product category already exists");
         }
-        return categoryRepository.save(new ProductCategory(categoryName));
+        return categoryRepository.save(new ProductCategory(categoryName.replaceAll("\\s+", "")));
     }
 }

@@ -2,6 +2,7 @@ package by.kapitonov.computer.shop.backend.rest.vm;
 
 import lombok.*;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,6 @@ public class ProductVM {
     private Integer countInStock;
     private String productCategory;
     private String productStatus;
-    private List<ReviewVM> reviews = new ArrayList<>();
+    private File previewImage;
 
 }
